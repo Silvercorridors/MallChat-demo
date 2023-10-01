@@ -27,8 +27,10 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
             IdleStateEvent event = (IdleStateEvent) evt;
             // 读空闲事件
             if (event.state() == IdleState.READER_IDLE){
-                // 读到了空闲，关闭连接, 下线
+                // 读到了空闲
                 System.out.println("读空闲");
+                // 关闭连接
+                ctx.channel().close();
                 // todo: 用户下线
 
             }
