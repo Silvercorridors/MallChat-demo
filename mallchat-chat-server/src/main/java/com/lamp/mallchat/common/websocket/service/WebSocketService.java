@@ -14,4 +14,17 @@ public interface WebSocketService {
     void handleLoginReq(Channel channel);
 
     void remove(Channel channel);
+
+    /**
+     * 扫码登录成功消息推送
+     * @param code
+     * @param id
+     */
+    void scanLoginSuccess(Integer code, Long id);
+
+    /**
+     * 等待授权消息推送
+     * @param code
+     */
+    void waitAuthorize(Integer code);
 }

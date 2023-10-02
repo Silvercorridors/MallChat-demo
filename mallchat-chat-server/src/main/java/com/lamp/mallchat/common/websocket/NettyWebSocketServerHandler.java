@@ -45,7 +45,6 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
             // 读空闲事件
             if (event.state() == IdleState.READER_IDLE){
                 userOffLine(ctx);
-                // todo: 用户下线
 
             }
         }

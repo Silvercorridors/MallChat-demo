@@ -11,6 +11,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author lamper
  * @since 2023-09-24
  */
-public interface IUserService extends IService<User> {
+public interface UserService {
 
+    /**
+     * 用户注册逻辑
+     * @param newUser 新用户
+     * @return
+     */
+    Long registry(User newUser);
 }

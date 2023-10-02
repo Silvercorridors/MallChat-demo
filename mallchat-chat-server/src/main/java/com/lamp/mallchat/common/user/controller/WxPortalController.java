@@ -1,5 +1,6 @@
 package com.lamp.mallchat.common.user.controller;
 
+import com.lamp.mallchat.common.user.service.WxMsgService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
@@ -32,6 +33,7 @@ public class WxPortalController {
 
     private final WxMpService wxMpService;
     private final WxMpMessageRouter messageRouter;
+    private final WxMsgService wxMsgService;
 
     @GetMapping("/test")
     public String test(@RequestParam("code") Integer code) throws WxErrorException {
@@ -65,8 +67,10 @@ public class WxPortalController {
     public RedirectView callBack(@RequestParam String code) throws WxErrorException {
         WxOAuth2AccessToken accessToken = wxMpService.getOAuth2Service().getAccessToken(code);
         WxOAuth2UserInfo userInfo = wxMpService.getOAuth2Service().getUserInfo(accessToken, "ZH_CN");
-        System.out.println(userInfo);
-        return null;
+        wxMsgService.authorize(userInfo);
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("www.mallchat.cn");
+        return redirectView;
     }
 
     @PostMapping(produces = "application/xml; charset=UTF-8")

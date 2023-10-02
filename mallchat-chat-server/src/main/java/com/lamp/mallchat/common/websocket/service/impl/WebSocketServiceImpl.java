@@ -4,6 +4,9 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.lamp.mallchat.common.user.dao.UserDao;
+import com.lamp.mallchat.common.user.domain.entity.User;
+import com.lamp.mallchat.common.user.service.LoginService;
 import com.lamp.mallchat.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.lamp.mallchat.common.websocket.domain.enums.WSRespTypeEnum;
 import com.lamp.mallchat.common.websocket.domain.vo.resp.WSBaseResp;
@@ -15,6 +18,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.SneakyThrows;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,6 +36,12 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private WxMpService wxMpService;
+
+    @Resource
+    private UserDao userDao;
+
+    @Resource
+    private LoginService loginService;
 
     /**
      * 管理所有在线用户的连接(登录态 / 游客)
@@ -67,6 +77,35 @@ public class WebSocketServiceImpl implements WebSocketService {
     public void remove(Channel channel) {
         ONLINE_WS_MAP.remove(channel);
         channel.close();
+        // todo: 用户下线
+
+    }
+
+    @Override
+    public void scanLoginSuccess(Integer code, Long uid) {
+        // 确认channel链接存在
+        Channel channel = WAIT_LOGIN_MAP.getIfPresent(code);
+        if (Objects.isNull(channel)){
+            return;
+        }
+        // 不从外面传user，保证user信息是最新的
+        User user = userDao.getById(uid);
+        // 从WAIT_LOGIN_MAP移除code
+        WAIT_LOGIN_MAP.invalidate(code);
+        // todo 调用登录模块获取token
+        String token = loginService.login(uid);
+        // 用户登录
+        sendMsg(channel, WebSocketAdapter.buildResp(user, token));
+    }
+
+    @Override
+    public void waitAuthorize(Integer code) {
+        // 确认channel链接存在
+        Channel channel = WAIT_LOGIN_MAP.getIfPresent(code);
+        if (Objects.isNull(channel)){
+            return;
+        }
+        sendMsg(channel, WebSocketAdapter.buildWaitAuthorizeResp());
     }
 
     private void sendMsg(Channel channel, WSBaseResp<?> resp) {
