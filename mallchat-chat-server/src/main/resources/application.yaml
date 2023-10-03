@@ -24,6 +24,12 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
+  task:
+    execution:
+      pool:
+        core-size: 10
+        max-size: 10
+        queue-capacity: 200
 
 wx:
   mp:
@@ -35,3 +41,5 @@ wx:
         token: ${mallchat.wx.token} # 接口配置里的Token值
         aesKey: ${mallchat.wx.aesKey} # 接口配置里的EncodingAESKey值
 
+jwt:
+  secret: ${mallchat.jwt.secret}
