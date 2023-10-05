@@ -1,5 +1,6 @@
 package com.lamp.mallchat.common.websocket;
 
+import com.lamp.mallchat.common.websocket.service.handler.MyHeaderCollectHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -78,7 +79,8 @@ public class NettyWebSocketServer {
                          *  2. 这就是为什么当浏览器发送大量数据时，就会发出多次 http请求的原因
                          */
                         pipeline.addLast(new HttpObjectAggregator(8192));
-                        //保存用户ip
+                        // 保存请求头
+                        pipeline.addLast(new MyHeaderCollectHandler());
 //                        pipeline.addLast(new HttpHeadersHandler());
                         /**
                          * 说明：

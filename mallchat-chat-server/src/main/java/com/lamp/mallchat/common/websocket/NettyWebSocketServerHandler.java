@@ -1,5 +1,6 @@
 package com.lamp.mallchat.common.websocket;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.lamp.mallchat.common.websocket.domain.enums.WSReqTypeEnum;
@@ -12,6 +13,8 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.Attribute;
+import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -37,6 +40,13 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         // 握手事件
         if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete){
+            Channel channel = ctx.channel();
+            this.webSocketService.connect(channel);
+            String token = NettyUtil.getAttr(channel, NettyUtil.TOKEN);
+            if (StrUtil.isNotBlank(token)){
+                // 认证
+                webSocketService.authorize(channel, token);
+            }
             log.info("握手完成");
         }
         // 心跳事件
@@ -45,7 +55,6 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
             // 读空闲事件
             if (event.state() == IdleState.READER_IDLE){
                 userOffLine(ctx);
-
             }
         }
         super.userEventTriggered(ctx, evt);
@@ -67,6 +76,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
         Channel channel = channelHandlerContext.channel();
         switch (WSReqTypeEnum.of(wsBaseReq.getType())) {
             case AUTHORIZE:
+                webSocketService.authorize(channel, wsBaseReq.getData());
                 break;
             case HEARTBEAT:
                 break;

@@ -94,8 +94,8 @@ public class WebSocketServiceImpl implements WebSocketService {
         WAIT_LOGIN_MAP.invalidate(code);
         // todo 调用登录模块获取token
         String token = loginService.login(uid);
-        // 用户登录
-        sendMsg(channel, WebSocketAdapter.buildResp(user, token));
+        loginSuccess(channel, user, token);
+
     }
 
     @Override
@@ -108,6 +108,36 @@ public class WebSocketServiceImpl implements WebSocketService {
         sendMsg(channel, WebSocketAdapter.buildWaitAuthorizeResp());
     }
 
+    @Override
+    public void authorize(Channel channel, String token) {
+        Long validUid = loginService.getValidUid(token);
+        // 若token存在，告知前端刷新token
+        if (Objects.nonNull(validUid)){
+            User user = userDao.getById(validUid);
+            loginSuccess(channel, user, token);
+        } else {
+            // 若后端不存在此token，告知前端清除token
+            sendMsg(channel, WebSocketAdapter.buildInValidTokenResp());
+        }
+
+    }
+
+    private void loginSuccess(Channel channel, User user, String token) {
+
+        // 保存channel对应的uid
+        WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
+        wsChannelExtraDTO.setUid(user.getId());
+        // todo 用户上线成功的事件
+
+        // 推送登录成功消息给前端
+        sendMsg(channel, WebSocketAdapter.buildResp(user, token));
+    }
+
+    /**
+     * webSocket， 给channel返回resp
+     * @param channel
+     * @param resp
+     */
     private void sendMsg(Channel channel, WSBaseResp<?> resp) {
         channel.writeAndFlush(new TextWebSocketFrame(JSONUtil.toJsonStr(resp)));
     }

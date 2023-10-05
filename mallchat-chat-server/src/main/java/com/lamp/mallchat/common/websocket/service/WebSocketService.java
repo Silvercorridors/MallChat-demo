@@ -27,4 +27,11 @@ public interface WebSocketService {
      * @param code
      */
     void waitAuthorize(Integer code);
+
+    /**
+     * 解析前端携带的token，进行授权
+     * @param channel
+     * @param data
+     */
+    void authorize(Channel channel, String data);
 }
