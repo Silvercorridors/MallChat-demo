@@ -57,6 +57,7 @@
             <artifactId>java-jwt</artifactId>
             <version>3.19.0</version>
         </dependency>
+
     </dependencies>
 
     <properties>

@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-10-05
  */
 @Service
-public class ItemConfigDao extends ServiceImpl<ItemConfigMapper, ItemConfig> implements IItemConfigService {
+public class ItemConfigDao extends ServiceImpl<ItemConfigMapper, ItemConfig> {
 
 }
