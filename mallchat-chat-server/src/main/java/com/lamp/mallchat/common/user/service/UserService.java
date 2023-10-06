@@ -1,7 +1,7 @@
 package com.lamp.mallchat.common.user.service;
 
 import com.lamp.mallchat.common.user.domain.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
 
 /**
  * <p>
@@ -19,4 +19,18 @@ public interface UserService {
      * @return
      */
     Long registry(User newUser);
+
+    /**
+     * 获取用户信息
+     * @param uid
+     * @return
+     */
+    UserInfoResp getUserInfo(Long uid);
+
+    /**
+     * 修改用户名
+     * @param uid
+     * @param name
+     */
+    void modifyName(Long uid, String name);
 }

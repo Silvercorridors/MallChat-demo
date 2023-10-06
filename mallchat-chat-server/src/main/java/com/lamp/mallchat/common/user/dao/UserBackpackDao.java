@@ -1,8 +1,8 @@
 package com.lamp.mallchat.common.user.dao;
 
+import com.lamp.mallchat.common.common.constants.YesOrNoEnum;
 import com.lamp.mallchat.common.user.domain.entity.UserBackpack;
 import com.lamp.mallchat.common.user.mapper.UserBackpackMapper;
-import com.lamp.mallchat.common.user.service.IUserBackpackService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +17,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpack> {
 
+    public Integer getCountByValidItemId(Long uid, Long itemId) {
+        return lambdaQuery().eq(UserBackpack::getUid, uid)
+                .eq(UserBackpack::getItemId, itemId)
+                .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
+                .count();
+    }
 }

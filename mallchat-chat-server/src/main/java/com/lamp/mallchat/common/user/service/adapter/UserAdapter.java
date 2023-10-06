@@ -1,6 +1,8 @@
 package com.lamp.mallchat.common.user.service.adapter;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.lamp.mallchat.common.user.domain.entity.User;
+import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 /**
@@ -18,5 +20,12 @@ public class UserAdapter {
                 .id(id)
                 .name(userInfo.getNickname())
                 .avatar(userInfo.getHeadImgUrl()).build();
+    }
+
+    public static UserInfoResp buildUserInfo(User user, Integer modifyNameCount) {
+        UserInfoResp userInfoResp = new UserInfoResp();
+        BeanUtil.copyProperties(user, userInfoResp);
+        userInfoResp.setModifyNameChance(modifyNameCount);
+        return userInfoResp;
     }
 }
