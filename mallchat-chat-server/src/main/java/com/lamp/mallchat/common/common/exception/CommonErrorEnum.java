@@ -16,6 +16,10 @@ public enum CommonErrorEnum implements ErrorEnum{
      */
     SYSTEM_ERROR(-1, "系统繁忙，请稍后再试~"),
     /**
+     * 业务异常
+     */
+    BUSINESS_ERROR(0, "{0}"),
+    /**
      * 参数校验失败
      */
     PARAM_INVALID(-2, "参数校验失败");
