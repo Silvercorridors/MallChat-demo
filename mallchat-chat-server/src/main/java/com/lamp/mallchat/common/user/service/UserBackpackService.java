@@ -21,5 +21,5 @@ public interface UserBackpackService {
      * @param idempotentEnum 幂等类型
      * @param businessId     上层业务发送的唯一标识
      */
-    void acquireItem(Long uid, Long itemId, IdempotentEnum idempotentEnum, String businessId) throws InterruptedException;
+    void acquireItem(Long uid, Long itemId, IdempotentEnum idempotentEnum, String businessId);
 }

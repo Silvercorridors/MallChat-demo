@@ -1,5 +1,6 @@
 package com.lamp.mallchat.common.user.service.impl;
 
+import com.lamp.mallchat.common.common.event.UserRegisterEvent;
 import com.lamp.mallchat.common.common.utils.AssertUtil;
 import com.lamp.mallchat.common.user.dao.ItemConfigDao;
 import com.lamp.mallchat.common.user.dao.UserBackpackDao;
@@ -15,6 +16,8 @@ import com.lamp.mallchat.common.user.service.UserService;
 import com.lamp.mallchat.common.user.service.adapter.UserAdapter;
 import com.lamp.mallchat.common.user.service.cache.ItemCache;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,11 +43,18 @@ public class UserServiceImpl implements UserService {
     private ItemCache itemCache;
     @Resource
     private ItemConfigDao itemConfigDao;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
 
     @Override
+    @Transactional
     public Long registry(User newUser) {
         userDao.save(newUser);
         // todo 用户注册事件
+        // 通过springEvent发送用户注册事件，通过观察者模式监听事件发生，进行发放改名卡
+        // source是事件的发布者
+        applicationEventPublisher.publishEvent(new UserRegisterEvent(this, newUser));
         return newUser.getId();
     }
 

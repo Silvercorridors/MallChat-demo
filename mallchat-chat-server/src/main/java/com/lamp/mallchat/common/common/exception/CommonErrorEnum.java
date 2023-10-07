@@ -22,8 +22,11 @@ public enum CommonErrorEnum implements ErrorEnum{
     /**
      * 参数校验失败
      */
-    PARAM_INVALID(-2, "参数校验失败");
-
+    PARAM_INVALID(-2, "参数校验失败"),
+    /**
+     * 分布式锁异常
+     */
+    LOCK_LIMIT(-3, "请求太频繁了，请稍后再试~");
 
     private final Integer code;
     private final String msg;
