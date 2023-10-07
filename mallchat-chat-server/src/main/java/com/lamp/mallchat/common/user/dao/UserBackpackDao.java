@@ -6,6 +6,8 @@ import com.lamp.mallchat.common.user.mapper.UserBackpackMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户背包表 服务实现类
@@ -41,5 +43,17 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
                 .set(UserBackpack::getStatus, YesOrNoEnum.YES.getStatus())
                 .update();
 
+    }
+
+    public List<UserBackpack> getByItemId(List<Long> badgeIds, Long uid) {
+        return lambdaQuery().eq(UserBackpack::getUid, uid)
+                .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
+                .in(UserBackpack::getItemId, badgeIds)
+                .list();
+    }
+
+    public UserBackpack getByIdp(String idempotent) {
+        return lambdaQuery().eq(UserBackpack::getIdempotent, idempotent)
+                .one();
     }
 }

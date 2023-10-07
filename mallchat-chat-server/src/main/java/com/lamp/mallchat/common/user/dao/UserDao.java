@@ -30,4 +30,10 @@ public class UserDao extends ServiceImpl<UserMapper, User>{
                 .update();
 
     }
+
+    public boolean wearingBadge(Long uid, Long itemId) {
+        return lambdaUpdate().eq(User::getId, uid)
+                .set(User::getItemId, itemId)
+                .update();
+    }
 }

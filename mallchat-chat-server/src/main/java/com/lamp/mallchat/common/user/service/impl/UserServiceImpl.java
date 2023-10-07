@@ -1,22 +1,27 @@
 package com.lamp.mallchat.common.user.service.impl;
 
-import cn.hutool.core.util.StrUtil;
-import com.lamp.mallchat.common.common.exception.BusinessException;
 import com.lamp.mallchat.common.common.utils.AssertUtil;
+import com.lamp.mallchat.common.user.dao.ItemConfigDao;
 import com.lamp.mallchat.common.user.dao.UserBackpackDao;
 import com.lamp.mallchat.common.user.dao.UserDao;
+import com.lamp.mallchat.common.user.domain.entity.ItemConfig;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.domain.entity.UserBackpack;
 import com.lamp.mallchat.common.user.domain.enums.ItemEnum;
+import com.lamp.mallchat.common.user.domain.enums.ItemTypeEnum;
+import com.lamp.mallchat.common.user.domain.vo.resp.BadgesResp;
 import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
 import com.lamp.mallchat.common.user.service.UserService;
 import com.lamp.mallchat.common.user.service.adapter.UserAdapter;
+import com.lamp.mallchat.common.user.service.cache.ItemCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author qyxmzg
@@ -31,6 +36,10 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Resource
     private UserBackpackDao userBackpackDao;
+    @Resource
+    private ItemCache itemCache;
+    @Resource
+    private ItemConfigDao itemConfigDao;
 
     @Override
     public Long registry(User newUser) {
@@ -67,5 +76,39 @@ public class UserServiceImpl implements UserService {
         }
 
 
+    }
+
+    /**
+     * 徽章列表
+     * @param uid 用户id
+     * @return
+     */
+    @Override
+    public List<BadgesResp> badges(Long uid) {
+        // 查询所有徽章列表
+        List<ItemConfig> badgesList = itemCache.getByType(ItemTypeEnum.BADGE.getType());
+        // 判断当前用户有哪些徽章
+        List<UserBackpack> backpacks =
+                userBackpackDao.getByItemId(badgesList.stream()
+                        .map(ItemConfig::getId)
+                        .collect(Collectors.toList()), uid);
+        // 查询用户佩戴的徽章
+        User user = userDao.getById(uid);
+        return UserAdapter.buildBadgeResp(badgesList, backpacks, user);
+    }
+
+    /**
+     *
+     * @param uid
+     * @param itemId
+     */
+    @Override
+    public void wearingBadge(Long uid, Long itemId) {
+        UserBackpack firstValidItem = userBackpackDao.getFirstValidItem(uid, itemId);
+        AssertUtil.isNotEmpty(firstValidItem, "你还未拥有此徽章");
+        // 确保这个物品是徽章
+        ItemConfig itemConfig = itemConfigDao.getById(itemId);
+        AssertUtil.equal(itemConfig.getType(), ItemTypeEnum.BADGE.getType(), "只有徽章才能佩戴");
+        userDao.wearingBadge(uid, itemId);
     }
 }
