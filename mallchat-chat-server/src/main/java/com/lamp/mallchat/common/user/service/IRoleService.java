@@ -1,16 +1,16 @@
 package com.lamp.mallchat.common.user.service;
 
-import com.lamp.mallchat.common.user.domain.entity.User;
+import com.lamp.mallchat.common.user.domain.entity.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 用户表 服务类
+ * 角色表 服务类
  * </p>
  *
  * @author lamper
  * @since 2023-10-08
  */
-public interface IUserService extends IService<User> {
+public interface IRoleService extends IService<Role> {
 
 }
