@@ -4,9 +4,12 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.lamp.mallchat.common.common.event.UserOnlineEvent;
 import com.lamp.mallchat.common.user.dao.UserDao;
+import com.lamp.mallchat.common.user.domain.entity.IpInfo;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.service.LoginService;
+import com.lamp.mallchat.common.websocket.NettyUtil;
 import com.lamp.mallchat.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.lamp.mallchat.common.websocket.domain.enums.WSRespTypeEnum;
 import com.lamp.mallchat.common.websocket.domain.vo.resp.WSBaseResp;
@@ -19,10 +22,12 @@ import lombok.SneakyThrows;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,6 +47,10 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private LoginService loginService;
+
+    @Resource
+    private ApplicationEventPublisher applicationEventPublisher;
+
 
     /**
      * 管理所有在线用户的连接(登录态 / 游客)
@@ -127,10 +136,13 @@ public class WebSocketServiceImpl implements WebSocketService {
         // 保存channel对应的uid
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
         wsChannelExtraDTO.setUid(user.getId());
-        // todo 用户上线成功的事件
-
         // 推送登录成功消息给前端
         sendMsg(channel, WebSocketAdapter.buildResp(user, token));
+        // todo 用户上线成功的事件: 保存ip地址
+        // 更新最后上线时间
+        user.setLastOptTime(new Date());
+        user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));
+        applicationEventPublisher.publishEvent(new UserOnlineEvent(this, user));
     }
 
     /**

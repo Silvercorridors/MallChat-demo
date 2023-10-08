@@ -1,5 +1,6 @@
-package com.lamp.mallchat.common.common.event;
+package com.lamp.mallchat.common.common.event.listener;
 
+import com.lamp.mallchat.common.common.event.UserRegisterEvent;
 import com.lamp.mallchat.common.user.dao.UserDao;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.domain.enums.IdempotentEnum;
