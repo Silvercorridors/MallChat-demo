@@ -1,5 +1,6 @@
 package com.lamp.mallchat.common.user.dao;
 
+import com.lamp.mallchat.common.common.constants.YesOrNoEnum;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -35,5 +36,10 @@ public class UserDao extends ServiceImpl<UserMapper, User>{
         return lambdaUpdate().eq(User::getId, uid)
                 .set(User::getItemId, itemId)
                 .update();
+    }
+
+    public void invalidByUid(Long id) {
+        lambdaUpdate().eq(User::getId, id)
+                .set(User::getStatus, YesOrNoEnum.YES.getStatus()).update();
     }
 }

@@ -8,7 +8,10 @@ import com.lamp.mallchat.common.common.event.UserOnlineEvent;
 import com.lamp.mallchat.common.user.dao.UserDao;
 import com.lamp.mallchat.common.user.domain.entity.IpInfo;
 import com.lamp.mallchat.common.user.domain.entity.User;
+import com.lamp.mallchat.common.user.domain.enums.RoleEnum;
+import com.lamp.mallchat.common.user.service.IUserRoleService;
 import com.lamp.mallchat.common.user.service.LoginService;
+import com.lamp.mallchat.common.user.service.RoleService;
 import com.lamp.mallchat.common.websocket.NettyUtil;
 import com.lamp.mallchat.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.lamp.mallchat.common.websocket.domain.enums.WSRespTypeEnum;
@@ -23,6 +26,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,8 +54,10 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private ApplicationEventPublisher applicationEventPublisher;
-
-
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     /**
      * 管理所有在线用户的连接(登录态 / 游客)
      */
@@ -131,14 +137,25 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     }
 
+    @Override
+    public void sendToAllOnline(WSBaseResp<?> msg, Long uid) {
+        ONLINE_WS_MAP.forEach((channel, ext) -> {
+            // 通过线程池给每个channel发送消息
+            threadPoolTaskExecutor.execute(() -> {
+                sendMsg(channel, msg);
+            });
+        });
+    }
+
     private void loginSuccess(Channel channel, User user, String token) {
 
         // 保存channel对应的uid
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
-        wsChannelExtraDTO.setUid(user.getId());
-        // 推送登录成功消息给前端
-        sendMsg(channel, WebSocketAdapter.buildResp(user, token));
-        // todo 用户上线成功的事件: 保存ip地址
+        Long uid = user.getId();
+        wsChannelExtraDTO.setUid(uid);
+        // 推送 登录成功消息、用户是否是管理员信息 给前端
+        sendMsg(channel, WebSocketAdapter.buildResp(user, token, roleService.hasPower(uid, RoleEnum.CHAT_MANAGER)));
+        // 用户上线成功的事件: 保存ip地址
         // 更新最后上线时间
         user.setLastOptTime(new Date());
         user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));

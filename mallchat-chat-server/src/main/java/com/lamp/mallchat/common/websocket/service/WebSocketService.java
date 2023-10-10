@@ -1,5 +1,7 @@
 package com.lamp.mallchat.common.websocket.service;
 
+import com.lamp.mallchat.common.websocket.domain.vo.resp.WSBaseResp;
+import com.lamp.mallchat.common.websocket.domain.vo.resp.WSBlack;
 import io.netty.channel.Channel;
 
 /**
@@ -34,4 +36,6 @@ public interface WebSocketService {
      * @param data
      */
     void authorize(Channel channel, String data);
+
+    void sendToAllOnline(WSBaseResp<?> msg, Long uid);
 }

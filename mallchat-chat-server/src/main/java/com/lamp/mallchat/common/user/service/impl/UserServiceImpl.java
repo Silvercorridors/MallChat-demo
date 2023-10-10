@@ -1,15 +1,22 @@
 package com.lamp.mallchat.common.user.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.lamp.mallchat.common.common.event.UserBlackEvent;
 import com.lamp.mallchat.common.common.event.UserRegisterEvent;
 import com.lamp.mallchat.common.common.utils.AssertUtil;
+import com.lamp.mallchat.common.user.dao.BlackDao;
 import com.lamp.mallchat.common.user.dao.ItemConfigDao;
 import com.lamp.mallchat.common.user.dao.UserBackpackDao;
 import com.lamp.mallchat.common.user.dao.UserDao;
+import com.lamp.mallchat.common.user.domain.entity.Black;
+import com.lamp.mallchat.common.user.domain.entity.IpInfo;
 import com.lamp.mallchat.common.user.domain.entity.ItemConfig;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.domain.entity.UserBackpack;
+import com.lamp.mallchat.common.user.domain.enums.BlackTypeEnum;
 import com.lamp.mallchat.common.user.domain.enums.ItemEnum;
 import com.lamp.mallchat.common.user.domain.enums.ItemTypeEnum;
+import com.lamp.mallchat.common.user.domain.vo.req.BlackReq;
 import com.lamp.mallchat.common.user.domain.vo.resp.BadgesResp;
 import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
 import com.lamp.mallchat.common.user.service.UserService;
@@ -24,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -43,9 +51,10 @@ public class UserServiceImpl implements UserService {
     private ItemCache itemCache;
     @Resource
     private ItemConfigDao itemConfigDao;
-    @Autowired
+    @Resource
     private ApplicationEventPublisher applicationEventPublisher;
-
+    @Resource
+    private BlackDao blackDao;
 
     @Override
     @Transactional
@@ -120,5 +129,34 @@ public class UserServiceImpl implements UserService {
         ItemConfig itemConfig = itemConfigDao.getById(itemId);
         AssertUtil.equal(itemConfig.getType(), ItemTypeEnum.BADGE.getType(), "只有徽章才能佩戴");
         userDao.wearingBadge(uid, itemId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void black(BlackReq req) {
+        Long uid = req.getUid();
+        Black user = new Black();
+        user.setType(BlackTypeEnum.UID.getType());
+        user.setTarget(uid.toString());
+        blackDao.save(user);
+        User blackedUser = userDao.getById(uid);
+        blackIp(Optional.ofNullable(blackedUser.getIpInfo()).map(IpInfo::getCreateIp).orElse(null));
+        blackIp(Optional.ofNullable(blackedUser.getIpInfo()).map(IpInfo::getUpdateIp).orElse(null));
+        applicationEventPublisher.publishEvent(new UserBlackEvent(this, blackedUser));
+    }
+
+    private void blackIp(String ip) {
+        if (StrUtil.isBlank(ip)) {
+            return;
+        }
+        try{
+            Black insert = new Black();
+            insert.setType(BlackTypeEnum.IP.getType());
+            insert.setTarget(ip);
+            blackDao.save(insert);
+        }catch (Exception e){
+            log.error("duplicate black ip:{}", ip);
+        }
+
     }
 }

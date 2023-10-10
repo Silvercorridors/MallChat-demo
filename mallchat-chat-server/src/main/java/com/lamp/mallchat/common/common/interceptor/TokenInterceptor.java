@@ -1,7 +1,5 @@
 package com.lamp.mallchat.common.common.interceptor;
 
-import cn.hutool.http.ContentType;
-import com.lamp.mallchat.common.common.domain.vo.resp.ApiResult;
 import com.lamp.mallchat.common.common.exception.HttpErrorEnum;
 import com.lamp.mallchat.common.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 

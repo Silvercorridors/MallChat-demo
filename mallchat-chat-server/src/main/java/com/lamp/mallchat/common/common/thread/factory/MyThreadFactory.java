@@ -1,5 +1,6 @@
-package com.lamp.mallchat.common.common.thread.handler;
+package com.lamp.mallchat.common.common.thread.factory;
 
+import com.lamp.mallchat.common.common.thread.handler.MyUncaughtExceptionHandler;
 import lombok.AllArgsConstructor;
 
 import java.util.concurrent.ThreadFactory;

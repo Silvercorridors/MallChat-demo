@@ -1,6 +1,7 @@
 package com.lamp.mallchat.common.user.service;
 
 import com.lamp.mallchat.common.user.domain.entity.User;
+import com.lamp.mallchat.common.user.domain.vo.req.BlackReq;
 import com.lamp.mallchat.common.user.domain.vo.resp.BadgesResp;
 import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
 
@@ -50,4 +51,10 @@ public interface UserService {
      * @param itemId 徽章id
      */
     void wearingBadge(Long uid, Long itemId);
+
+    /**
+     * 拉黑
+     * @param req
+     */
+    void black(BlackReq req);
 }

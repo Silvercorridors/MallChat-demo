@@ -20,6 +20,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Autowired
     private CollectorInterceptor collectorInterceptor;
 
+    @Autowired
+    private BlackInterceptor blackInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         /**
@@ -32,6 +35,12 @@ public class InterceptorConfig implements WebMvcConfigurer {
          */
         registry.addInterceptor(collectorInterceptor)
                 .addPathPatterns("/capi/**");
+        /**
+         * 拉黑拦截器
+         */
+        registry.addInterceptor(blackInterceptor)
+                .addPathPatterns("/capi/**");
+
         ;
     }
 }

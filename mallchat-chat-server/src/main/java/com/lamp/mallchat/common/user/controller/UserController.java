@@ -2,11 +2,15 @@ package com.lamp.mallchat.common.user.controller;
 
 
 import com.lamp.mallchat.common.common.domain.vo.resp.ApiResult;
+import com.lamp.mallchat.common.common.utils.AssertUtil;
 import com.lamp.mallchat.common.common.utils.RequestHolder;
+import com.lamp.mallchat.common.user.domain.enums.RoleEnum;
+import com.lamp.mallchat.common.user.domain.vo.req.BlackReq;
 import com.lamp.mallchat.common.user.domain.vo.req.ModifyNameReq;
 import com.lamp.mallchat.common.user.domain.vo.req.WearingBadgeReq;
 import com.lamp.mallchat.common.user.domain.vo.resp.BadgesResp;
 import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
+import com.lamp.mallchat.common.user.service.RoleService;
 import com.lamp.mallchat.common.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -34,8 +39,11 @@ import java.util.List;
 @Api(tags = "用户相关接口")
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserService userService;
+
+    @Resource
+    private RoleService roleService;
 
     /**
      * 获取用户信息，个人信息
@@ -72,5 +80,17 @@ public class UserController {
         userService.wearingBadge(RequestHolder.get().getUid(), wearingBadgeReq.getItemId());
         return ApiResult.success();
     }
+
+    @PutMapping("/black")
+    @ApiOperation("拉黑用户")
+    public ApiResult<Void> black(@Valid @RequestBody BlackReq req) {
+        Long uid = RequestHolder.get().getUid();
+        boolean hasPower = roleService.hasPower(uid, RoleEnum.ADMIN);
+        AssertUtil.isTrue(hasPower, "没有权限");
+        userService.black(req);
+        return ApiResult.success();
+    }
+
+
 }
 
