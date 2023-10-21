@@ -5,7 +5,7 @@ import com.lamp.mallchat.common.websocket.domain.vo.resp.WSBlack;
 import io.netty.channel.Channel;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/2 0:00
  * @description WebSocket服务类
  */

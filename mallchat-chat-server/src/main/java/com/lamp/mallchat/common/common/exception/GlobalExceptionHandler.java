@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 22:04
  * @description 全局异常获取
  */

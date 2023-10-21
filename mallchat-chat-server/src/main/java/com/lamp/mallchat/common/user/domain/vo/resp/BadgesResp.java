@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 16:44
  * @description 用户信息返回体
  */

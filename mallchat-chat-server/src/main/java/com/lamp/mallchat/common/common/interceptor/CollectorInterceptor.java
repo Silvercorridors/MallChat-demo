@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 21:00
  * @description 收集器(收集所有请求需要的参数, 放到ThreadLocal里存储)
  */

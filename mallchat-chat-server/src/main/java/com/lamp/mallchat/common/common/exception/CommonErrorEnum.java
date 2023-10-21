@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 22:12
  * @description 通用异常枚举
  */

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/9 23:04
  * @description mallchat项目共用线程池
  */

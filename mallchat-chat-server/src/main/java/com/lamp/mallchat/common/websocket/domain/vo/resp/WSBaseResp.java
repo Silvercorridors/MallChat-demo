@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/9/23 19:46
  * @description webSocket基本返回类
  */

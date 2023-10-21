@@ -7,7 +7,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 /**
  * wx消息服务类
- * @author qyxmzg
+ * @author silverCorridors
  */
 public interface WxMsgService {
 

@@ -5,7 +5,7 @@ import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/4 23:46
  * @description Netty工具类
  */

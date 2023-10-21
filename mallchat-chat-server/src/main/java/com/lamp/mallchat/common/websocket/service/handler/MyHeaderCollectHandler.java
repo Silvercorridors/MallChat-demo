@@ -11,7 +11,7 @@ import java.net.InetSocketAddress;
 import java.util.Optional;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/4 23:17
  * @description 自定义握手协议处理器
  */

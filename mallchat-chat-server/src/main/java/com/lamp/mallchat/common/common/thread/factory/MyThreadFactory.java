@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/3 23:24
  * @description 装饰器—线程工厂类
  */

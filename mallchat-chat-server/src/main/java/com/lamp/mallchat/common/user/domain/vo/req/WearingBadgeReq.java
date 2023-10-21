@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 21:41
  * @description 改名请求VO
  */

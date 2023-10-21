@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  *   用户ip详情
- * @author qyxmzg
+ * @author silverCorridors
  */
 @Data
 @Builder

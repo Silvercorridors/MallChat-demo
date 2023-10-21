@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/7 17:18
  * @description 用户上线事件监听器
  */

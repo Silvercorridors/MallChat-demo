@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁注解
- * @author qyxmzg
+ * @author silverCorridors
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

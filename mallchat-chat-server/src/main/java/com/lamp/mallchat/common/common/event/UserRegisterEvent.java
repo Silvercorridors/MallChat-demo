@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/7 17:14
  * @description 用户注册事件类
  */

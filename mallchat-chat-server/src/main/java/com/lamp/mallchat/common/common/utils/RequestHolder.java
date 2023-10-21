@@ -3,7 +3,7 @@ package com.lamp.mallchat.common.common.utils;
 import com.lamp.mallchat.common.common.domain.dto.RequestInfo;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 21:04
  * @description 请求上下文
  */

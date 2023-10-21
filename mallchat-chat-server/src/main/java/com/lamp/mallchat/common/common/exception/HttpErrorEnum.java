@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 19:45
  * @description HttpError枚举类
  */

@@ -9,7 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/9/23 19:42
  * @description webSocket请求类型枚举
  */

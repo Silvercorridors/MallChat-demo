@@ -3,7 +3,7 @@ package com.lamp.mallchat.common.common.exception;
 import lombok.Data;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/6 15:24
  * @description 业务异常
  */

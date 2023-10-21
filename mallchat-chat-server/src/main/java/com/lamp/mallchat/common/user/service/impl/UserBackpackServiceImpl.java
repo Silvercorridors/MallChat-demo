@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/6 23:47
  * @description 用户背包 服务实现类
  */

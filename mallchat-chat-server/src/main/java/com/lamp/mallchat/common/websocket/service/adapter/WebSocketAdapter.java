@@ -11,7 +11,7 @@ import com.lamp.mallchat.common.websocket.domain.vo.resp.WSLoginUrl;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/2 0:31
  * @description
  */

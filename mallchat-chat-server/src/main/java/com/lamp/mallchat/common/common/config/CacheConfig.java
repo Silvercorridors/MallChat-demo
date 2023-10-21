@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 本地缓存配置
- * @author qyxmzg
+ * @author silverCorridors
  */
 @EnableCaching
 @Configuration

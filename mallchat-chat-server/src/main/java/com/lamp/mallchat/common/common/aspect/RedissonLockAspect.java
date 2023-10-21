@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/7 11:17
  * @description 分布式锁切面类
  */

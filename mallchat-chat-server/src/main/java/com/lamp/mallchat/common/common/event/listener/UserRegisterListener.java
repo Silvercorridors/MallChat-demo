@@ -16,7 +16,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import javax.annotation.Resource;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/7 17:18
  * @description 用户注册事件监听器
  */

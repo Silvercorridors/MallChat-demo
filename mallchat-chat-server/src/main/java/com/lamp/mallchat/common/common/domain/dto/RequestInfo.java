@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/5 21:09
  * @description 请求信息
  */

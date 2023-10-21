@@ -1,7 +1,7 @@
 package com.lamp.mallchat.common.common.constants;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/3 19:23
  * @description Redis常量类
  */

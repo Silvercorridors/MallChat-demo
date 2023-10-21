@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/2 15:06
  * @description wx消息服务实现类
  */

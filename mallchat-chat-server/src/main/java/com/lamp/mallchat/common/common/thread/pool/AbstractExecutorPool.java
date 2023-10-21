@@ -3,7 +3,7 @@ package com.lamp.mallchat.common.common.thread.pool;
 import lombok.Data;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/9 23:02
  * @description 线程池抽象类
  */

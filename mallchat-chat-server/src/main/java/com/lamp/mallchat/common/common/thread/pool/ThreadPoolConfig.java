@@ -15,7 +15,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/3 22:43
  * @description 线程池配置类
  */

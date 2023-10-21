@@ -18,7 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/9/23 19:46
  * @description webSocket返回类型枚举类
  */

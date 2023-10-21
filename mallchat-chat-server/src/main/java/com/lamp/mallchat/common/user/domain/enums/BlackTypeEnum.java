@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /**
  * Description: 拉黑类型枚举
- * @author qyxmzg
+ * @author silverCorridors
  */
 @AllArgsConstructor
 @Getter

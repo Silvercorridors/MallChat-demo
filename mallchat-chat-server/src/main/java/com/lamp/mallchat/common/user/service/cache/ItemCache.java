@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/6 16:34
  * @description 物品缓存类
  */

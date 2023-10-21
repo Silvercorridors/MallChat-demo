@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author <a href="https://github.com/zongzibinbin">abin</a>
- * @since 2023-03-19
+ * @author silverCorridors
+ * @since 2023-10-21
  */
 @Data
 @ApiModel("游标翻页返回")

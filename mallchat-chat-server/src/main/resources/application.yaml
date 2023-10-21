@@ -33,7 +33,20 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+# 线程池配置
+async-pool:
+  # mallchat共用线程池
+  mallchat:
+    coreSize: 10
+    maxSize: 10
+    keepAliveSeconds: 60
+    queueCapacity: 200
+  # websocket模块线程池
+  websocket:
+    coreSize: 10
+    maxSize: 10
+    keepAliveSeconds: 60
+    queueCapacity: 200
 wx:
   mp:
     #    callback: http://f4cd-113-92-129-127.ngrok.io

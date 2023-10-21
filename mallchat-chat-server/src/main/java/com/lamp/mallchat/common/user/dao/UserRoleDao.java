@@ -18,7 +18,7 @@ import java.util.Objects;
  * @since 2023-10-08
  */
 @Service
-public class UserRoleDao extends ServiceImpl<UserRoleMapper, UserRole> implements IUserRoleService {
+public class UserRoleDao extends ServiceImpl<UserRoleMapper, UserRole> {
 
     /**
      * 获取uid的所有角色

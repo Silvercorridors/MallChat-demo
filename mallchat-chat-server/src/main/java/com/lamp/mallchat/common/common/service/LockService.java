@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  * @date 2023/10/7 10:44
  * @description 分布式锁服务
  */

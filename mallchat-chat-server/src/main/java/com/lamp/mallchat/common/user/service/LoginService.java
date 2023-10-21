@@ -2,7 +2,7 @@ package com.lamp.mallchat.common.user.service;
 
 
 /**
- * @author qyxmzg
+ * @author silverCorridors
  */
 public interface LoginService {
 
