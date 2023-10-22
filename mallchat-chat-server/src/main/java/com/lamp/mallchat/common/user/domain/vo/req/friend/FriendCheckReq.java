@@ -1,4 +1,4 @@
-package com.lamp.mallchat.common.user.domain.vo.req;
+package com.lamp.mallchat.common.user.domain.vo.req.friend;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

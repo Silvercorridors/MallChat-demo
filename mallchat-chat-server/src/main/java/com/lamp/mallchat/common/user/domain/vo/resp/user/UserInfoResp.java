@@ -1,4 +1,4 @@
-package com.lamp.mallchat.common.user.domain.vo.resp;
+package com.lamp.mallchat.common.user.domain.vo.resp.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

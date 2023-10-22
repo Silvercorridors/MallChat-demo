@@ -1,4 +1,4 @@
-package com.lamp.mallchat.common.user.domain.vo.req;
+package com.lamp.mallchat.common.user.domain.vo.req.user;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,9 +12,9 @@ import javax.validation.constraints.NotBlank;
  * @description 改名请求VO
  */
 @Data
-public class ModifyNameReq {
-    @NotBlank(message = "用户名不可以为空")
-    @Length(max = 6, message = "用户名不可以超过6位")
-    @ApiModelProperty("用户名")
-    private String name;
+public class WearingBadgeReq {
+    @NotBlank(message = "徽章id不可以为空")
+    @ApiModelProperty("徽章id")
+    private Long itemId;
+
 }

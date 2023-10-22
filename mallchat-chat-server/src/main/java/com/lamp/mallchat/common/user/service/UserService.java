@@ -1,9 +1,9 @@
 package com.lamp.mallchat.common.user.service;
 
 import com.lamp.mallchat.common.user.domain.entity.User;
-import com.lamp.mallchat.common.user.domain.vo.req.BlackReq;
-import com.lamp.mallchat.common.user.domain.vo.resp.BadgesResp;
-import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
+import com.lamp.mallchat.common.user.domain.vo.req.user.BlackReq;
+import com.lamp.mallchat.common.user.domain.vo.resp.user.BadgesResp;
+import com.lamp.mallchat.common.user.domain.vo.resp.user.UserInfoResp;
 
 import java.util.List;
 

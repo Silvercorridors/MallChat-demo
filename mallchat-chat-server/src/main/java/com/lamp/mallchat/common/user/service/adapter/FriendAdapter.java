@@ -1,8 +1,14 @@
 package com.lamp.mallchat.common.user.service.adapter;
 
 import com.lamp.mallchat.common.user.domain.entity.User;
+import com.lamp.mallchat.common.user.domain.entity.UserApply;
 import com.lamp.mallchat.common.user.domain.entity.UserFriend;
-import com.lamp.mallchat.common.user.domain.vo.resp.FriendResp;
+import com.lamp.mallchat.common.user.domain.enums.ApplyReadStatusEnum;
+import com.lamp.mallchat.common.user.domain.enums.ApplyStatusEnum;
+import com.lamp.mallchat.common.user.domain.enums.ApplyTypeEnum;
+import com.lamp.mallchat.common.user.domain.vo.req.friend.FriendApplyReq;
+import com.lamp.mallchat.common.user.domain.vo.resp.friend.FriendApplyResp;
+import com.lamp.mallchat.common.user.domain.vo.resp.friend.FriendResp;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +31,29 @@ public class FriendAdapter {
                 resp.setActiveStatus(user.getActiveStatus());
             }
             return resp;
+        }).collect(Collectors.toList());
+    }
+
+    public static UserApply buildFriendApply(Long uid, FriendApplyReq request) {
+        UserApply userApplyNew = new UserApply();
+        userApplyNew.setUid(uid);
+        userApplyNew.setMsg(request.getMsg());
+        userApplyNew.setType(ApplyTypeEnum.ADD_FRIEND.getCode());
+        userApplyNew.setTargetId(request.getTargetUid());
+        userApplyNew.setStatus(ApplyStatusEnum.WAIT_APPROVAL.getCode());
+        userApplyNew.setReadStatus(ApplyReadStatusEnum.UNREAD.getCode());
+        return userApplyNew;
+    }
+
+    public static List<FriendApplyResp> buildFriendApplyList(List<UserApply> records) {
+        return records.stream().map(userApply -> {
+            FriendApplyResp friendApplyResp = new FriendApplyResp();
+            friendApplyResp.setUid(userApply.getUid());
+            friendApplyResp.setType(userApply.getType());
+            friendApplyResp.setApplyId(userApply.getId());
+            friendApplyResp.setMsg(userApply.getMsg());
+            friendApplyResp.setStatus(userApply.getStatus());
+            return friendApplyResp;
         }).collect(Collectors.toList());
     }
 }

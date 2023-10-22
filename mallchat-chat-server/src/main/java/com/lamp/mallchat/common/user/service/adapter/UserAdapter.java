@@ -5,8 +5,8 @@ import com.lamp.mallchat.common.common.constants.YesOrNoEnum;
 import com.lamp.mallchat.common.user.domain.entity.ItemConfig;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.domain.entity.UserBackpack;
-import com.lamp.mallchat.common.user.domain.vo.resp.BadgesResp;
-import com.lamp.mallchat.common.user.domain.vo.resp.UserInfoResp;
+import com.lamp.mallchat.common.user.domain.vo.resp.user.BadgesResp;
+import com.lamp.mallchat.common.user.domain.vo.resp.user.UserInfoResp;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 import java.util.Comparator;

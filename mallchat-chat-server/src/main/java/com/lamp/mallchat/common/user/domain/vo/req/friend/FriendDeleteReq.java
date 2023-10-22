@@ -1,4 +1,4 @@
-package com.lamp.mallchat.common.user.domain.vo.req;
+package com.lamp.mallchat.common.user.domain.vo.req.friend;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -8,14 +8,21 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author silverCorridors
+ * @date 2023/10/22 22:03
+ * @description
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlackReq {
+public class FriendDeleteReq {
 
     @NotNull
-    @ApiModelProperty("拉黑目标uid")
-    private Long uid;
+    @ApiModelProperty("好友uid")
+    private Long targetUid;
+
 
 }
+

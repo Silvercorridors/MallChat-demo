@@ -1,4 +1,4 @@
-package com.lamp.mallchat.common.user.domain.vo.resp;
+package com.lamp.mallchat.common.user.domain.vo.resp.friend;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
