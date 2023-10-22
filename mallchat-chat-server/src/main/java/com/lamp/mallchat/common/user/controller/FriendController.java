@@ -45,7 +45,12 @@ public class FriendController {
         return ApiResult.success(friendService.check(uid, request));
     }
 
-
+    @GetMapping("/page")
+    @ApiOperation("联系人列表")
+    public ApiResult<CursorPageBaseResp<FriendResp>> friendList(@Valid CursorPageBaseReq request) {
+        Long uid = RequestHolder.get().getUid();
+        return ApiResult.success(friendService.friendList(uid, request));
+    }
 
 
 

@@ -1,5 +1,8 @@
 package com.lamp.mallchat.common.user.dao;
 
+import com.lamp.mallchat.common.common.domain.vo.req.CursorPageBaseReq;
+import com.lamp.mallchat.common.common.domain.vo.resp.CursorPageBaseResp;
+import com.lamp.mallchat.common.common.utils.CursorUtils;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.domain.entity.UserFriend;
 import com.lamp.mallchat.common.user.mapper.UserFriendMapper;
@@ -24,5 +27,10 @@ public class UserFriendDao extends ServiceImpl<UserFriendMapper, UserFriend> {
         return lambdaQuery().eq(UserFriend::getUid, uid)
                 .in(UserFriend::getFriendUid, uidList)
                 .list();
+    }
+
+    public CursorPageBaseResp<UserFriend> getFriendPage(Long uid, CursorPageBaseReq cursorPageBaseReq) {
+        return CursorUtils.getCursorPageByMysql(this, cursorPageBaseReq,
+                wrapper -> wrapper.eq(UserFriend::getUid, uid), UserFriend::getId);
     }
 }

@@ -7,28 +7,21 @@ import com.lamp.mallchat.common.common.annotation.RedissonLock;
 import com.lamp.mallchat.common.common.domain.vo.req.CursorPageBaseReq;
 import com.lamp.mallchat.common.common.domain.vo.req.PageBaseReq;
 import com.lamp.mallchat.common.common.domain.vo.resp.CursorPageBaseResp;
-import com.lamp.mallchat.common.common.domain.vo.resp.PageBaseResp;
-import com.lamp.mallchat.common.common.utils.AssertUtil;
-import com.lamp.mallchat.common.user.dao.UserApplyDao;
 import com.lamp.mallchat.common.user.dao.UserDao;
 import com.lamp.mallchat.common.user.dao.UserFriendDao;
-import com.lamp.mallchat.common.user.domain.entity.UserApply;
+import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.domain.entity.UserFriend;
 import com.lamp.mallchat.common.user.domain.vo.req.FriendCheckReq;
 import com.lamp.mallchat.common.user.domain.vo.resp.FriendCheckResp;
+import com.lamp.mallchat.common.user.domain.vo.resp.FriendResp;
 import com.lamp.mallchat.common.user.service.FriendService;
+import com.lamp.mallchat.common.user.service.adapter.FriendAdapter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.framework.AopContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,6 +38,8 @@ public class FriendServiceImpl implements FriendService {
     @Resource
     private UserFriendDao userFriendDao;
 
+    @Resource
+    private UserDao userDao;
 
 
     @Override
@@ -62,5 +57,18 @@ public class FriendServiceImpl implements FriendService {
         return FriendCheckResp.builder()
                 .checkedList(friendCheckList)
                 .build();
+    }
+    @Override
+    public CursorPageBaseResp<FriendResp> friendList(Long uid, CursorPageBaseReq request) {
+        CursorPageBaseResp<UserFriend> friendPage = userFriendDao.getFriendPage(uid, request);
+        if (CollectionUtils.isEmpty(friendPage.getList())) {
+            return CursorPageBaseResp.empty();
+        }
+        List<Long> friendUids = friendPage.getList()
+                .stream().map(UserFriend::getFriendUid)
+                .collect(Collectors.toList());
+        // 根据friendUids查询出用户信息
+        List<User> userList = userDao.getFriendList(friendUids);
+        return CursorPageBaseResp.init(friendPage, FriendAdapter.buildFriend(friendPage.getList(), userList));
     }
 }
