@@ -12,6 +12,7 @@ import com.lamp.mallchat.common.user.domain.entity.IpDetail;
 import com.lamp.mallchat.common.user.domain.entity.IpInfo;
 import com.lamp.mallchat.common.user.domain.entity.User;
 import com.lamp.mallchat.common.user.service.IpService;
+import com.lamp.mallchat.common.user.service.cache.UserCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,8 @@ public class IpServiceImpl implements IpService, DisposableBean {
 
     @Resource
     private UserDao userDao;
+    @Resource
+    private UserCache userCache;
 
     @Override
     public void refreshIpDetailAsync(Long uid) {
@@ -63,6 +66,7 @@ public class IpServiceImpl implements IpService, DisposableBean {
                 update.setId(uid);
                 update.setIpInfo(ipInfo);
                 userDao.updateById(user);
+                userCache.userInfoChange(uid);
             } else {
                 log.error("get ip detail fail ip:{}, uid:{}", ip, uid);
             }

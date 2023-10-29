@@ -4,9 +4,13 @@ package com.lamp.mallchat.common.user.controller;
 import com.lamp.mallchat.common.common.domain.vo.resp.ApiResult;
 import com.lamp.mallchat.common.common.utils.AssertUtil;
 import com.lamp.mallchat.common.common.utils.RequestHolder;
+import com.lamp.mallchat.common.user.domain.dto.ItemInfoDTO;
+import com.lamp.mallchat.common.user.domain.dto.SummeryInfoDTO;
 import com.lamp.mallchat.common.user.domain.enums.RoleEnum;
+import com.lamp.mallchat.common.user.domain.vo.req.ItemInfoReq;
 import com.lamp.mallchat.common.user.domain.vo.req.user.BlackReq;
 import com.lamp.mallchat.common.user.domain.vo.req.user.ModifyNameReq;
+import com.lamp.mallchat.common.user.domain.vo.req.user.SummeryInfoReq;
 import com.lamp.mallchat.common.user.domain.vo.req.user.WearingBadgeReq;
 import com.lamp.mallchat.common.user.domain.vo.resp.user.BadgesResp;
 import com.lamp.mallchat.common.user.domain.vo.resp.user.UserInfoResp;
@@ -15,6 +19,7 @@ import com.lamp.mallchat.common.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +58,18 @@ public class UserController {
     @ApiOperation("获取用户信息, 个人信息")
     public ApiResult<UserInfoResp> getUserInfo() {
         return ApiResult.success(userService.getUserInfo(RequestHolder.get().getUid()));
+    }
+
+    @PostMapping("/public/summary/userInfo/batch")
+    @ApiOperation("用户聚合信息-返回的代表需要刷新的")
+    public ApiResult<List<SummeryInfoDTO>> getSummeryUserInfo(@Valid @RequestBody SummeryInfoReq req) {
+        return ApiResult.success(userService.getSummeryUserInfo(req));
+    }
+
+    @PostMapping("/public/badges/batch")
+    @ApiOperation("徽章聚合信息-返回的代表需要刷新的")
+    public ApiResult<List<ItemInfoDTO>> getItemInfo(@Valid @RequestBody ItemInfoReq req) {
+        return ApiResult.success(userService.getItemInfo(req));
     }
 
     /**

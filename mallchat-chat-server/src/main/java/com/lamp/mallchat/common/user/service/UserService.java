@@ -1,7 +1,11 @@
 package com.lamp.mallchat.common.user.service;
 
+import com.lamp.mallchat.common.user.domain.dto.ItemInfoDTO;
+import com.lamp.mallchat.common.user.domain.dto.SummeryInfoDTO;
 import com.lamp.mallchat.common.user.domain.entity.User;
+import com.lamp.mallchat.common.user.domain.vo.req.ItemInfoReq;
 import com.lamp.mallchat.common.user.domain.vo.req.user.BlackReq;
+import com.lamp.mallchat.common.user.domain.vo.req.user.SummeryInfoReq;
 import com.lamp.mallchat.common.user.domain.vo.resp.user.BadgesResp;
 import com.lamp.mallchat.common.user.domain.vo.resp.user.UserInfoResp;
 
@@ -57,4 +61,18 @@ public interface UserService {
      * @param req
      */
     void black(BlackReq req);
+
+    /**
+     * 获取用户汇总信息
+     * @param req 用户汇总信息请求
+     * @return
+     */
+    List<SummeryInfoDTO> getSummeryUserInfo(SummeryInfoReq req);
+
+    /**
+     * 获取徽章信息
+     * @param req 徽章信息请求
+     * @return
+     */
+    List<ItemInfoDTO> getItemInfo(ItemInfoReq req);
 }

@@ -14,7 +14,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+/**
+ * 批量缓存框架 - Redis版 - 模板方法模式
+ * @param <IN> key的类型
+ * @param <OUT> value的类型
+ */
 public abstract class AbstractRedisStringCache<IN, OUT> implements BatchCache<IN, OUT> {
 
     private Class<OUT> outClass;
@@ -46,7 +50,7 @@ public abstract class AbstractRedisStringCache<IN, OUT> implements BatchCache<IN
         List<String> keys = req.stream().map(this::getKey).collect(Collectors.toList());
         //批量get
         List<OUT> valueList = RedisUtils.mget(keys, outClass);
-        //差集计算
+        //差集计算, 需要刷新缓存(缓存未命中)的req放入loadReqs
         List<IN> loadReqs = new ArrayList<>();
         for (int i = 0; i < valueList.size(); i++) {
             if (Objects.isNull(valueList.get(i))) {

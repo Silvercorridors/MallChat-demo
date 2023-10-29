@@ -40,4 +40,22 @@ public class ItemCache {
     @CacheEvict(cacheNames = "item", key = "'itemsByType:' + #itemType")
     public void evictByType(Integer itemType){
     }
+
+    /**
+     * 根据itemId获取物品配置
+     * @param itemId itemId
+     * @return
+     */
+    @Cacheable(cacheNames = "item", key = "'item:'+#itemId")
+    public ItemConfig getByItemId(Long itemId) {
+        return itemConfigDao.getById(itemId);
+    }
+
+    /**
+     * 清空缓存
+     */
+    @CacheEvict(cacheNames = "item", key = "'item:' + #itemId")
+    public void evictById(Long itemId){
+    }
+
 }

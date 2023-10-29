@@ -14,7 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * 批量缓存框架 - 本地缓存版(Caffeine) - 模板方法模式
+ * @param <IN> key的类型
+ * @param <OUT> value的类型
+ */
 public abstract class AbstractLocalCache<IN, OUT> implements BatchCache<IN, OUT> {
 
     private Class<OUT> outClass;

@@ -1,15 +1,18 @@
 package com.lamp.mallchat.common.user.service.cache;
 
+import com.lamp.mallchat.common.common.constants.RedisKey;
 import com.lamp.mallchat.common.user.dao.BlackDao;
 import com.lamp.mallchat.common.user.dao.UserDao;
 import com.lamp.mallchat.common.user.dao.UserRoleDao;
 import com.lamp.mallchat.common.user.domain.entity.Black;
 import com.lamp.mallchat.common.user.domain.entity.UserRole;
+import com.lamp.mallchat.utils.RedisUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,9 @@ public class UserCache {
 
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private UserSummaryCache userSummaryCache;
 
     @Resource
     private UserRoleDao userRoleDao;
@@ -56,4 +62,40 @@ public class UserCache {
         return null;
     }
 
+    public List<Long> getUserModifyTime(List<Long> uidList) {
+        // 拼接缓存key
+        List<String> keys = uidList.stream().map(uid -> RedisKey.getKey(RedisKey.USER_MODIFY_STRING, uid)).collect(Collectors.toList());
+        // 查询缓存
+        return RedisUtils.mget(keys, Long.class);
+    }
+
+    /**
+     * 更新用户信息上次更新时间
+     * @param uid
+     */
+    public void refreshUserModifyTime(Long uid) {
+        String key = RedisKey.getKey(RedisKey.USER_MODIFY_STRING, uid);
+        RedisUtils.set(key, System.currentTimeMillis());
+    }
+
+    public void userInfoChange(Long uid) {
+        delUserInfo(uid);
+        //删除UserSummaryCache，前端下次懒加载的时候可以获取到最新的数据
+        userSummaryCache.delete(uid);
+        refreshUserModifyTime(uid);
+    }
+
+    private void delUserInfo(Long uid) {
+        String key = RedisKey.getKey(RedisKey.USER_INFO_STRING, uid);
+        RedisUtils.del(key);
+    }
+
+    public void online(Long uid, Date optTime) {
+        String onlineKey = RedisKey.getKey(RedisKey.ONLINE_UID_ZET);
+        String offlineKey = RedisKey.getKey(RedisKey.OFFLINE_UID_ZET);
+        //移除离线表
+        RedisUtils.zRemove(offlineKey, uid);
+        //更新上线表
+        RedisUtils.zAdd(onlineKey, uid, optTime.getTime());
+    }
 }
